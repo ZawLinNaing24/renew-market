@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:renew_market/providers/user_provider.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
