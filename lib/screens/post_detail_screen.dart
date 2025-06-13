@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
 import 'package:renew_market/constatns/urls.dart';
 import 'package:renew_market/models/post_model.dart';
+import 'package:renew_market/providers/post_provider.dart';
 import 'package:renew_market/providers/user_provider.dart';
+import 'package:renew_market/screens/home_screen.dart';
 import 'package:renew_market/widgets/status_badge.dart';
 import 'package:renew_market/widgets/time_ago.dart';
 
@@ -11,8 +13,95 @@ class PostDetailScreen extends StatelessWidget {
   final PostModel post;
   const PostDetailScreen({super.key, required this.post});
 
+  void _showMoreOptions(
+    BuildContext context,
+    PostProvider postPvider,
+    String postId,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(0)),
+      ),
+      builder:
+          (context) => ListView(
+            shrinkWrap: true,
+            children: [
+              ListTile(
+                title: Text(("edit")),
+                onTap: () {
+                  null;
+                },
+              ),
+              ListTile(
+                title: Text("Delete"),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        backgroundColor: Colors.grey[200],
+                        content: Text(
+                          "Are You Sure To Delete?",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed:
+                                Navigator.of(context).pop, // Close dialog
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              postPvider.removePost(postId);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text("Your post has been deleted."),
+                                ),
+                              );
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+              ListTile(
+                title: Text("Cancel"),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final postPvider = Provider.of<PostProvider>(context);
     return Consumer<UserProvider>(
       builder: (context, userPvider, child) {
         return Scaffold(
@@ -90,44 +179,50 @@ class PostDetailScreen extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color:
-                          !userPvider.user.favorites.contains(post.postId)
-                              ? background
-                              : activeOpacity,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.grey, width: 2),
-                    ),
-                    child:
-                        (userPvider.user.userId == post.sellerId)
-                            ? IconButton(
-                              padding: EdgeInsets.all(3),
-                              onPressed: () {},
-                              icon: Icon(Icons.more_vert, color: inActive),
-                            )
-                            : IconButton(
-                              padding: EdgeInsets.all(3),
-                              onPressed: () {
-                                !userPvider.user.favorites.contains(post.postId)
-                                    ? userPvider.addFavorite(post.postId)
-                                    : userPvider.removeFavorite(post.postId);
-                                debugPrint(
-                                  "this is user favourite list${userPvider.user.favorites}",
-                                );
-                              },
-                              icon: Icon(
-                                Icons.favorite,
+                  userPvider.user.userId == post.sellerId
+                      ? Container(
+                        decoration: BoxDecoration(
+                          color: background,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.all(3),
+                          onPressed: () {
+                            _showMoreOptions(context, postPvider, post.postId);
+                          },
+                          icon: Icon(Icons.more_vert, color: inActive),
+                        ),
+                      )
+                      : Container(
+                        decoration: BoxDecoration(
+                          color:
+                              !userPvider.user.favorites.contains(post.postId)
+                                  ? background
+                                  : activeOpacity,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey, width: 2),
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.all(3),
+                          onPressed: () {
+                            !userPvider.user.favorites.contains(post.postId)
+                                ? userPvider.addFavorite(post.postId)
+                                : userPvider.removeFavorite(post.postId);
+                            debugPrint(
+                              "this is user favourite list${userPvider.user.favorites}",
+                            );
+                          },
+                          icon: Icon(
+                            Icons.favorite,
 
-                                color:
-                                    !userPvider.user.favorites.contains(
-                                          post.postId,
-                                        )
-                                        ? inActive
-                                        : active,
-                              ),
-                            ),
-                  ),
+                            color:
+                                !userPvider.user.favorites.contains(post.postId)
+                                    ? inActive
+                                    : active,
+                          ),
+                        ),
+                      ),
                   SizedBox(width: 10),
                   Expanded(
                     flex: 1,

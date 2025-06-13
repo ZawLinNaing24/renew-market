@@ -37,7 +37,7 @@ class CustomInputField extends StatelessWidget {
       keyboardType: isNum ? TextInputType.number : TextInputType.text,
       maxLines: lines,
       validator: (value) {
-        debugPrint("This is debug value $value");
+        // debugPrint("This is debug value $value");
         if (value == null || value.isEmpty) {
           return validationMessage;
         }

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
 import 'package:renew_market/datas/mock_posts.dart';
 import 'package:renew_market/models/post_model.dart';
+import 'package:renew_market/providers/post_provider.dart';
 import 'package:renew_market/widgets/custom_input_field.dart';
 
 class PostUploadScreen extends StatefulWidget {
@@ -30,9 +32,10 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
     super.dispose();
   }
 
-  void _addPost() {
+  PostModel _addPost() {
+    PostModel? newPost;
     if (_formKey.currentState!.validate()) {
-      final newPost = PostModel(
+      newPost = PostModel(
         postId: 'post_${mockPosts.length + 1}',
         title: _titleController.text,
         description: _descriptionController.text,
@@ -47,10 +50,12 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
         createdAt: Timestamp.now(),
       );
     }
+    return newPost!;
   }
 
   @override
   Widget build(BuildContext context) {
+    final postPvider = Provider.of<PostProvider>(context, listen: false);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -148,7 +153,8 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                           ),
                           isSemanticButton: true,
                           onPressed: () {
-                            _addPost();
+                            debugPrint("add new${_addPost()}");
+                            postPvider.addPost(_addPost());
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Successfully added!')),
                             );

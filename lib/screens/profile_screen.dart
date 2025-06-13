@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
-import 'package:renew_market/datas/mock_user.dart';
 import 'package:renew_market/providers/user_provider.dart';
 import 'package:renew_market/widgets/profile_tabs.dart';
 
