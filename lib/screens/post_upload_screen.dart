@@ -100,7 +100,6 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 ),
                 CustomInputField(
                   controller: _titleController,
-                  isNum: false,
                   lines: 1,
                   validationMessage: "Title cannot be empty",
                 ),
@@ -117,7 +116,7 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 ),
                 CustomInputField(
                   controller: _priceController,
-                  isNum: true,
+                  type: "price",
                   lines: 1,
                   validationMessage: "Price cannot be empty",
                 ),
@@ -134,7 +133,6 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 ),
                 CustomInputField(
                   controller: _descriptionController,
-                  isNum: false,
                   lines: 3,
                   validationMessage: "Desription cannot be empty ",
                 ),

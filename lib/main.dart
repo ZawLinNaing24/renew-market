@@ -3,6 +3,7 @@ import 'package:renew_market/providers/post_provider.dart';
 import 'package:renew_market/providers/user_provider.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:renew_market/screens/sign_in_screen.dart';
 
 void main() {
   runApp(
@@ -22,7 +23,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: NavigationScreen(),
+      home: SignInScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

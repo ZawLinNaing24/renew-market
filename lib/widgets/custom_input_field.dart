@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
 class CustomInputField extends StatelessWidget {
-  final bool isNum;
   final int lines;
   final String? validationMessage;
   final TextEditingController controller;
-  const CustomInputField({
+  String? type;
+  CustomInputField({
     super.key,
-
-    required this.isNum,
     required this.lines,
     required this.controller,
     required this.validationMessage,
+    this.type,
   });
 
   @override
@@ -34,18 +33,34 @@ class CustomInputField extends StatelessWidget {
         ),
       ),
       controller: controller,
-      keyboardType: isNum ? TextInputType.number : TextInputType.text,
+      keyboardType: type == "price" ? TextInputType.number : TextInputType.text,
       maxLines: lines,
-      validator: (value) {
-        // debugPrint("This is debug value $value");
+      obscureText: type == "password" ? true : false,
+      validator: (String? value) {
         if (value == null || value.isEmpty) {
           return validationMessage;
         }
-        if (isNum) {
-          if (double.tryParse(value) == null) {
-            return 'Please enter Number';
+        // debugPrint("This is debug value $value");
+        if ((type?.isNotEmpty ?? false)) {
+          if (type == "email") {
+            return !RegExp(
+                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+",
+                ).hasMatch(value!)
+                ? 'Wrong email form'
+                : null;
+          } else if (type == "password") {
+            return !RegExp(
+                  r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$',
+                ).hasMatch(value!)
+                ? 'Write least one upper, lower case, and digit'
+                : null;
+          } else if (type == "price") {
+            if (double.tryParse(value) == null) {
+              return 'Please enter Number';
+            }
           }
         }
+
         return null;
       },
     );
