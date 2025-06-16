@@ -29,6 +29,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Image.network(logoUrl, height: 40, fit: BoxFit.contain),
         centerTitle: true,
       ),

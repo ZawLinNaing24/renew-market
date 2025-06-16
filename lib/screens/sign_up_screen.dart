@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:renew_market/constatns/app_theme.dart';
-import 'package:renew_market/constatns/urls.dart';
-import 'package:renew_market/screens/navigation_screen.dart';
-import 'package:renew_market/screens/sign_up_screen.dart';
+import 'package:renew_market/screens/sign_in_screen.dart';
 import 'package:renew_market/widgets/custom_input_field.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPwdController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _nickNameController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPwdController.dispose();
+    _nameController.dispose();
+    _nickNameController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -36,9 +40,13 @@ class _SignInScreenState extends State<SignInScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.network(logoUrl, height: 40, fit: BoxFit.contain),
+                child: Text(
+                  introductoryText,
+                  style: title1,
+                  textAlign: TextAlign.center,
+                ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
@@ -59,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  "password",
+                  "Password",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -71,34 +79,57 @@ class _SignInScreenState extends State<SignInScreen> {
                 type: "password",
                 lines: 1,
                 controller: _passwordController,
-                validationMessage: "Password cannot be blank.",
+                validationMessage: "Password cannot be Blank.",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "Confirm Password",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: text,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen()),
-                      );
-                    },
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2,
-                        decorationColor: Color(0xff397C45),
-                        color: Color(0xff397C45),
-                      ),
-                    ),
+                ),
+              ),
+              CustomInputField(
+                type: "confirm_password",
+                lines: 1,
+                controller: _confirmPwdController,
+                validationMessage: "Confirm Password cannot be Blank.",
+                originalPassword: _passwordController.text,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "Name",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: text,
                   ),
-                ],
+                ),
+              ),
+              CustomInputField(
+                lines: 1,
+                controller: _nameController,
+                validationMessage: "Name cannot be Blank.",
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  "Nickname",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: text,
+                  ),
+                ),
+              ),
+              CustomInputField(
+                lines: 1,
+                controller: _nickNameController,
+                validationMessage: "NickName cannot be Blank.",
               ),
             ],
           ),
@@ -121,14 +152,14 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NavigationScreen()),
+                    MaterialPageRoute(builder: (context) => SignInScreen()),
                   );
                 }
               },
               child: Text(
-                "Sign In",
+                "Sign up",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,

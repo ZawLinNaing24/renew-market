@@ -5,20 +5,24 @@ class CustomInputField extends StatelessWidget {
   final String? validationMessage;
   final TextEditingController controller;
   String? type;
+  String? originalPassword;
   CustomInputField({
     super.key,
     required this.lines,
     required this.controller,
     required this.validationMessage,
     this.type,
+    this.originalPassword
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
       textAlign: TextAlign.justify,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal:10),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Color(0xFFE8E8E8), width: 1.0),
         ),
@@ -35,7 +39,7 @@ class CustomInputField extends StatelessWidget {
       controller: controller,
       keyboardType: type == "price" ? TextInputType.number : TextInputType.text,
       maxLines: lines,
-      obscureText: type == "password" ? true : false,
+      obscureText: type == "password" || type== "confirm_password" ? true : false,
       validator: (String? value) {
         if (value == null || value.isEmpty) {
           return validationMessage;
@@ -54,7 +58,13 @@ class CustomInputField extends StatelessWidget {
                 ).hasMatch(value!)
                 ? 'Write least one upper, lower case, and digit'
                 : null;
-          } else if (type == "price") {
+          } 
+          else if (type =="confirm_password" ){
+            if (originalPassword != controller.text){
+              return "Password does not match";
+            }
+          }
+          else if (type == "price") {
             if (double.tryParse(value) == null) {
               return 'Please enter Number';
             }
