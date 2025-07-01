@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
 import 'package:renew_market/constatns/urls.dart';
+import 'package:renew_market/providers/auth_provider.dart';
+import 'package:renew_market/screens/home_screen.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
 import 'package:renew_market/screens/sign_up_screen.dart';
 import 'package:renew_market/widgets/custom_input_field.dart';
@@ -26,6 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -100,6 +104,31 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ],
               ),
+              Center(
+                child: TextButton(
+                  onPressed: () {
+                    authProvider.sendPasswordRestEmail();
+                  },
+                  child: Text(
+                    "Forget Password",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 2,
+                      decorationColor: Color(0xff397C45),
+                      color: Color(0xff397C45),
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    authProvider.signInWithGoogle();
+                  },
+                  child: Text("Sign In With Google", style: title2),
+                ),
+              ),
             ],
           ),
         ),
@@ -119,12 +148,33 @@ class _SignInScreenState extends State<SignInScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => NavigationScreen()),
+                  bool success = await authProvider.signIn(
+                    _emailController.text,
+                    _passwordController.text,
                   );
+
+                  if (success) {
+                    if (context.mounted) {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NavigationScreen(),
+                        ),
+                      );
+                    }
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "'Login failed. Please check your credentials.",
+                          ),
+                        ),
+                      );
+                    }
+                  }
                 }
               },
               child: Text(

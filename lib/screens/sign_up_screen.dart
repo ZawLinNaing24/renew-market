@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
+import 'package:renew_market/providers/auth_provider.dart';
 import 'package:renew_market/screens/sign_in_screen.dart';
 import 'package:renew_market/widgets/custom_input_field.dart';
 
@@ -30,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthenticationProvider>(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -97,7 +100,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 lines: 1,
                 controller: _confirmPwdController,
                 validationMessage: "Confirm Password cannot be Blank.",
-                originalPassword: _passwordController.text,
+                originalPasswordController: _passwordController,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -150,12 +153,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()),
+                  var signUpValue = await authProvider.signUp(
+                    _emailController.text,
+                    _passwordController.text,
+                    _nameController.text,
+                    _nickNameController.text,
                   );
+                  debugPrint("singUp value $signUpValue");
+                  if (signUpValue) {
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignInScreen()),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Account created successfully")),
+                      );
+                    }
+                    authProvider.sendEmailVerification();
+                  } else {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Sign Up failed. Please try again."),
+                        ),
+                      );
+                    }
+                  }
                 }
               },
               child: Text(

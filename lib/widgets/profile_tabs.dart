@@ -13,7 +13,7 @@ class MySalesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PostModel> currentUserSellPost =
         mockPosts.where((post) => post.sellerId == mockUser.userId).toList();
-    debugPrint(currentUserSellPost.toString());
+    // debugPrint(currentUserSellPost.toString());
     return PostGridView(postData: currentUserSellPost);
   }
 }
@@ -35,7 +35,7 @@ class FavoritesTab extends StatelessWidget {
     final userPvider = Provider.of<UserProvider>(context);
     List<PostModel> favoritePost =
         mockPosts
-            .where((post) => userPvider.user.favorites.contains(post.postId))
+            .where((post) => userPvider.user.favorites!.contains(post.postId))
             .toList();
 
     return PostGridView(postData: favoritePost);

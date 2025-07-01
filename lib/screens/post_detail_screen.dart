@@ -197,7 +197,7 @@ class PostDetailScreen extends StatelessWidget {
                       : Container(
                         decoration: BoxDecoration(
                           color:
-                              !userPvider.user.favorites.contains(post.postId)
+                              !userPvider.user.favorites!.contains(post.postId)
                                   ? background
                                   : activeOpacity,
                           borderRadius: BorderRadius.circular(5),
@@ -206,7 +206,7 @@ class PostDetailScreen extends StatelessWidget {
                         child: IconButton(
                           padding: EdgeInsets.all(3),
                           onPressed: () {
-                            !userPvider.user.favorites.contains(post.postId)
+                            !userPvider.user.favorites!.contains(post.postId)
                                 ? userPvider.addFavorite(post.postId)
                                 : userPvider.removeFavorite(post.postId);
                             debugPrint(
@@ -217,7 +217,9 @@ class PostDetailScreen extends StatelessWidget {
                             Icons.favorite,
 
                             color:
-                                !userPvider.user.favorites.contains(post.postId)
+                                !userPvider.user.favorites!.contains(
+                                      post.postId,
+                                    )
                                     ? inActive
                                     : active,
                           ),
