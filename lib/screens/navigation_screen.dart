@@ -10,6 +10,7 @@ import 'package:renew_market/screens/post_upload_screen.dart';
 import 'package:renew_market/screens/profile_screen.dart';
 import 'package:renew_market/screens/search_screen.dart';
 import 'package:renew_market/screens/sign_in_screen.dart';
+import 'package:renew_market/widgets/upload_mock_data_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -22,11 +23,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int screenIndex = 0; // Index of selected screen
   // Screen Lst
   final List<Widget> screens = [
-    HomeScreen(),
-    SearchScreen(),
-    PostUploadScreen(),
-    ChatListScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const SearchScreen(),
+    const PostUploadScreen(),
+    const ChatListScreen(),
+    // const UploadMockDataScreen(),
+    const ProfileScreen(),
   ];
 
   @override

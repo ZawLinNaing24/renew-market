@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/* For item listing posts */
 class PostModel {
   final String postId; // Unique identifier for the post
   final String title; // The title of the post
@@ -29,4 +30,18 @@ class PostModel {
   // String toString() {
   //   return "title:${title}";
   // }
+  Map<String, dynamic> toMap() {
+    return {
+      "postId": postId,
+      "title": title,
+      "description": description,
+      "price": price,
+      "images": images,
+      "sellerId": sellerId,
+      "sellerName": sellerName,
+      "location": location,
+      "isAvailable": isAvailable,
+      "createdAt": createdAt,
+    };
+  }
 }
