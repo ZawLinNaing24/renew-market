@@ -27,21 +27,37 @@ class PostModel {
     required this.createdAt,
   });
 
-  // String toString() {
-  //   return "title:${title}";
-  // }
+  String toString() {
+    return "title:${title}";
+  }
+
+  factory PostModel.fromMap(Map<String, dynamic> map) {
+    return PostModel(
+      postId: map['postId'] ?? '',
+      title: map['title'] ?? '',
+      description: map['description'] ?? '',
+      price: map['price'] ?? 0,
+      images: List<String>.from(map['images'] ?? []),
+      sellerId: map['sellerId'] ?? '',
+      sellerName: map['sellerName'] ?? '',
+      location: map['location'] ?? const GeoPoint(0.0, 0.0),
+      isAvailable: map['isAvailable'] ?? true,
+      createdAt: map['createdAt'] ?? Timestamp.now(),
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
-      "postId": postId,
-      "title": title,
-      "description": description,
-      "price": price,
-      "images": images,
-      "sellerId": sellerId,
-      "sellerName": sellerName,
-      "location": location,
-      "isAvailable": isAvailable,
-      "createdAt": createdAt,
+      'postId': postId,
+      'title': title,
+      'description': description,
+      'price': price,
+      'images': images,
+      'sellerId': sellerId,
+      'sellerName': sellerName,
+      'location': location,
+      'isAvailable': isAvailable,
+      'createdAt': createdAt,
     };
   }
 }

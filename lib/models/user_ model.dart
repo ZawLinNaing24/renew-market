@@ -22,13 +22,16 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      userId: json['id'],
+      userId: json['userId'],
       name: json['name'],
       email: json['email'],
       nickname: json['nickname'],
       // profileImage: json['description'],
       joinedDate: json['createdAt'],
-      // favorites: json['favorites'],
+      favorites:
+          (json['favorites'] as List<dynamic>?)
+              ?.map((item) => item as String)
+              .toList(),
     );
   }
 

@@ -46,7 +46,7 @@ class UserProvider extends ChangeNotifier {
         print("doc data -> ${doc.data()} ");
         if (doc.exists) {
           _user = await UserModel.fromJson(doc.data()!);
-          // debugPrint("add _user from UserModel ${user.name}");
+          debugPrint("add _user from UserModel ${user.name}");
           // debugPrint("Current user doc form firestorre ${_user.email}");
           notifyListeners();
         } else {

@@ -23,7 +23,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int screenIndex = 0; // Index of selected screen
   // Screen Lst
   final List<Widget> screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const SearchScreen(),
     const PostUploadScreen(),
     const ChatListScreen(),
