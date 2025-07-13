@@ -27,7 +27,15 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
       TextEditingController(); // Controller for price input
   late String? userId;
   late String? userName;
-  String? selectedImage;
+  // String? selectedImage;
+  late ValueNotifier<String?> selectedImageNotifier;
+
+  @override
+  void initState() {
+    selectedImageNotifier = ValueNotifier<String?>(null);
+    super.initState();
+  }
+
   @override
   void dispose() {
     // Dispose controllers when the screen is destroyed
@@ -45,7 +53,11 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
         title: _titleController.text,
         description: _descriptionController.text,
         price: num.tryParse(_priceController.text) ?? 0,
-        images: [selectedImage != '' ? selectedImage! : defalutImg],
+        images: [
+          selectedImageNotifier.value != ''
+              ? selectedImageNotifier.value!
+              : defalutImg,
+        ],
         sellerId: userId!,
         sellerName: userName!,
         location: const GeoPoint(37.7749, -122.4194), // 임시 위치 값
@@ -97,9 +109,12 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                 itemBuilder: (_, index) {
                   return InkWell(
                     onTap: () async {
-                      setState(() {
-                        selectedImage = albumImages[index].toString();
-                      });
+                      // setState(() {
+                      //   selectedImage = albumImages[index].toString();
+                      // });
+                      selectedImageNotifier.value =
+                          albumImages[index].toString();
+                      print("image url => ${selectedImageNotifier.value}");
                       Navigator.pop(context);
                     },
                     child: Image.network(albumImages[index], fit: BoxFit.cover),
@@ -161,27 +176,40 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                       onTap: () async {
                         await _pickImage();
                       },
-                      child: Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border:
-                              (selectedImage == null)
-                                  ? Border.all(width: 1)
-                                  : Border.all(width: 0),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child:
-                            (selectedImage == null)
-                                ? Icon(Icons.camera_alt_outlined)
-                                : ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.network(
-                                    selectedImage!,
-                                    height: 40,
-                                    fit: BoxFit.fill,
-                                  ),
+                      child: ValueListenableBuilder(
+                        valueListenable: selectedImageNotifier,
+                        builder: (context, currentSelectedImage, child) {
+                          print("Current select image $currentSelectedImage");
+                          if (currentSelectedImage != null &&
+                              currentSelectedImage.isNotEmpty) {
+                            return Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 0),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  currentSelectedImage,
+                                  height: 40,
+                                  fit: BoxFit.fill,
                                 ),
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Icon(Icons.camera_alt_outlined),
+                            );
+                          }
+                        },
                       ),
                     ),
                     Padding(
@@ -261,6 +289,9 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
                                 _titleController.clear();
                                 _priceController.clear();
                                 _descriptionController.clear();
+                                selectedImageNotifier.value = null;
+
+                                // setState(() {});
                               },
                               child: Text(
                                 "Add a Product",
