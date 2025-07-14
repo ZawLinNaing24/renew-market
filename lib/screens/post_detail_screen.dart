@@ -8,6 +8,8 @@ import 'package:renew_market/models/post_model.dart';
 import 'package:renew_market/providers/post_provider.dart';
 import 'package:renew_market/providers/user_provider.dart';
 import 'package:renew_market/screens/home_screen.dart';
+import 'package:renew_market/screens/navigation_screen.dart';
+import 'package:renew_market/screens/post_edit_screen.dart';
 import 'package:renew_market/widgets/status_badge.dart';
 import 'package:renew_market/widgets/time_ago.dart';
 
@@ -20,6 +22,7 @@ class PostDetailScreen extends StatelessWidget {
     PostProvider postPvider,
     String postId,
   ) {
+    final firestoreHelper = CloudFirestoreHelper();
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -30,9 +33,14 @@ class PostDetailScreen extends StatelessWidget {
             shrinkWrap: true,
             children: [
               ListTile(
-                title: Text(("edit")),
-                onTap: () {
-                  null;
+                title: Text(("Edit")),
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostEditScreen(post: post),
+                    ),
+                  );
                 },
               ),
               ListTile(
@@ -46,8 +54,9 @@ class PostDetailScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                         ),
                         backgroundColor: Colors.grey[200],
+                        title: Text("Delete Post"),
                         content: Text(
-                          "Are You Sure To Delete?",
+                          "Are You Sure you want to delete this post?",
                           style: TextStyle(fontSize: 20),
                         ),
                         actions: [
@@ -64,16 +73,32 @@ class PostDetailScreen extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {
-                              postPvider.removePost(postId);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Your post has been deleted."),
-                                ),
-                              );
-                              Navigator.pop(context);
+                            onPressed: () async {
+                              // postPvider.removePost(postId);
+                              try {
+                                if (context.mounted) {
+                                  // Navigator.pop(context);
+                                  // Navigator.pop(context); If we use pop() method, "Null check operator used on a null value" appear, because current postIdex is
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => NavigationScreen(),
+                                    ),
+                                  );
+                                  await firestoreHelper.deletePost(postId);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        "Your post has been deleted.",
+                                      ),
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                throw Exception(
+                                  "Error message whild deleting the post: $e",
+                                );
+                              }
                             },
                             child: Text(
                               "Delete",
@@ -120,6 +145,9 @@ class PostDetailScreen extends StatelessWidget {
         }
         if (!snapshot.hasData) {
           return Scaffold(body: Center(child: Text("Post Not Found")));
+        }
+        if (snapshot.data == null) {
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         final data = snapshot.data!.data()!;
         final post = PostModel.fromMap(data);
