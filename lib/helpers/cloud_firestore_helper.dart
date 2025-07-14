@@ -31,4 +31,38 @@ class CloudFirestoreHelper {
       throw Exception('Error uploading post: $e');
     }
   }
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+    } catch (e) {
+      throw Exception("Error Whild deleting the post: $e");
+    }
+  }
+
+  Future<void> updatePost({
+    required String postId,
+    required String title,
+    required String description,
+    required String price,
+    required String selectedImageUrl,
+  }) async {
+    try {
+      await _firestore.collection("posts").doc(postId).update({
+        "title": title,
+        "description": description,
+        "price": num.tryParse(price),
+        "images": [selectedImageUrl],
+      });
+    } catch (e) {
+      throw Exception("Error While Updating the post: $e");
+    }
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatsStream(String userId) {
+    return _firestore
+        .collection("chats")
+        .where("participants", arrayContains: userId)
+        .snapshots();
+  }
 }

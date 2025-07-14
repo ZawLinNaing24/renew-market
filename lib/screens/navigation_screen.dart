@@ -103,6 +103,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             icon: Icon(Icons.logout_rounded, size: 26),
           ),
         ],
+        elevation: 10,
       ),
       body: SafeArea(child: screens.elementAt(screenIndex)),
       bottomNavigationBar: BottomNavigationBar(
