@@ -61,7 +61,7 @@ class CustomInputField extends StatelessWidget {
             } else if (type == "confirm_password") {
               if (originalPasswordController!.text.trim() != value.trim()) {
                 debugPrint("original ${originalPasswordController!.text} ");
-                debugPrint("confirm Pwd ${value}");
+                debugPrint("confirm Pwd $value");
                 return "Password does not match";
               }
             } else if (type == "price") {

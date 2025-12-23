@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:renew_market/helpers/cloud_firestore_helper.dart';
 import 'package:renew_market/models/chat_model.dart';
 import 'package:renew_market/providers/user_provider.dart';
+import 'package:renew_market/screens/chat_detail_screen.dart';
 import 'package:renew_market/widgets/time_ago.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -74,25 +74,40 @@ class _ChatListScreenState extends State<ChatListScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
-                    ListTile(
-                      leading: CircleAvatar(child: Icon(Icons.person)),
-                      title: Text(chats[index].title),
-                      subtitle:
-                          chats[index].lastMessage!.content != "" ||
-                                  chats[index].lastMessage!.content.isNotEmpty
-                              ? Text(
-                                chats[index].lastMessage!.content,
-                                maxLines: 1,
-                                overflow: TextOverflow.clip,
-                              )
-                              : Text("No Messages yet."),
-                      trailing:
-                          chats[index].lastMessage!.content != "" ||
-                                  chats[index].lastMessage!.content.isNotEmpty
-                              ? Text(
-                                timeAgo(chats[index].lastMessage!.timestamp),
-                              )
-                              : null,
+                    InkWell(
+                      onTap: () async {
+                        debugPrint(chats[index].id);
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ChatDetailScreen(
+                                  chatId: chats[index].id,
+                                  title: chats[index].title,
+                                ),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(child: Icon(Icons.person)),
+                        title: Text(chats[index].title),
+                        subtitle:
+                            chats[index].lastMessage!.content != "" ||
+                                    chats[index].lastMessage!.content.isNotEmpty
+                                ? Text(
+                                  chats[index].lastMessage!.content,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.clip,
+                                )
+                                : Text("No Messages yet."),
+                        trailing:
+                            chats[index].lastMessage!.content != "" ||
+                                    chats[index].lastMessage!.content.isNotEmpty
+                                ? Text(
+                                  timeAgo(chats[index].lastMessage!.timestamp),
+                                )
+                                : null,
+                      ),
                     ),
                     Divider(thickness: 1, height: 0, indent: 10, endIndent: 10),
                   ],

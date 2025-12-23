@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const String introductoryText = "Welcome To\n\Renew Market";
+const String introductoryText = "Welcome To\nRenew Market";
 
 const Color primary = Color(0xFF52CC6D);
 const Color active = Color(0xFFFF7E36);

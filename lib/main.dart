@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
 import 'package:renew_market/screens/sign_in_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:renew_market/screens/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +48,7 @@ class MainApp extends StatelessWidget {
             debugPrint("Snapshot user data $user");
             return const NavigationScreen();
           } else {
-            return const SignInScreen();
+            return const SplashScreen();
           }
         },
       ),

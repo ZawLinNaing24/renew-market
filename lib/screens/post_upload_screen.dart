@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
 import 'package:renew_market/constatns/urls.dart';
-import 'package:renew_market/datas/mock_posts.dart';
 import 'package:renew_market/helpers/cloud_firestore_helper.dart';
 import 'package:renew_market/models/post_model.dart';
 import 'package:renew_market/providers/post_provider.dart';
@@ -88,7 +87,7 @@ class _PostUploadScreenState extends State<PostUploadScreen> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 500,
           child: Column(
             children: [

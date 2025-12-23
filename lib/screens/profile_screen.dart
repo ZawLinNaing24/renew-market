@@ -37,10 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen>
           );
         }
         final userPvider = context.watch<UserProvider>();
-        // final user = userProvider.user;
-        if (userPvider.user == null) {
-          return const Scaffold(body: Center(child: Text('User not found.')));
-        }
         return Scaffold(
           body: Column(
             mainAxisSize: MainAxisSize.min,

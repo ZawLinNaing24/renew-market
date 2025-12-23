@@ -27,8 +27,9 @@ class PostModel {
     required this.createdAt,
   });
 
+  @override
   String toString() {
-    return "title:${title}";
+    return "title:$title";
   }
 
   factory PostModel.fromMap(Map<String, dynamic> map) {

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
@@ -92,7 +91,7 @@ class _PostEditScreenState extends State<PostEditScreen> {
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 500,
           child: Column(
             children: [

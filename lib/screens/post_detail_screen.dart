@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
@@ -7,7 +6,6 @@ import 'package:renew_market/helpers/cloud_firestore_helper.dart';
 import 'package:renew_market/models/post_model.dart';
 import 'package:renew_market/providers/post_provider.dart';
 import 'package:renew_market/providers/user_provider.dart';
-import 'package:renew_market/screens/home_screen.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
 import 'package:renew_market/screens/post_edit_screen.dart';
 import 'package:renew_market/widgets/status_badge.dart';

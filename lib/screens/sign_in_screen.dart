@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
 import 'package:renew_market/constatns/urls.dart';
 import 'package:renew_market/providers/auth_provider.dart';
-import 'package:renew_market/screens/home_screen.dart';
 import 'package:renew_market/screens/navigation_screen.dart';
 import 'package:renew_market/screens/sign_up_screen.dart';
 import 'package:renew_market/widgets/custom_input_field.dart';

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:renew_market/datas/mock_user.dart';
 import 'package:renew_market/models/user_%20model.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -45,7 +44,7 @@ class UserProvider extends ChangeNotifier {
                 .get();
         print("doc data -> ${doc.data()} ");
         if (doc.exists) {
-          _user = await UserModel.fromJson(doc.data()!);
+          _user = UserModel.fromJson(doc.data()!);
           debugPrint("add _user from UserModel ${user.name}");
           // debugPrint("Current user doc form firestorre ${_user.email}");
           notifyListeners();

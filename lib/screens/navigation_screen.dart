@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:renew_market/constatns/app_theme.dart';
@@ -10,7 +9,6 @@ import 'package:renew_market/screens/post_upload_screen.dart';
 import 'package:renew_market/screens/profile_screen.dart';
 import 'package:renew_market/screens/search_screen.dart';
 import 'package:renew_market/screens/sign_in_screen.dart';
-import 'package:renew_market/widgets/upload_mock_data_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
